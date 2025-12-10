@@ -1,0 +1,25 @@
+name: Deploy Discord CVE Bot
+
+on:
+  push:
+    branches: ["main"] # 또는 너가 쓰는 브랜치 이름
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Trigger Render deploy hook
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"

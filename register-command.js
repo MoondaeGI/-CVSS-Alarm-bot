@@ -12,13 +12,11 @@ if (!DISCORD_TOKEN || !DISCORD_CLIENT_ID || !DISCORD_GUILD_ID) {
 const commands = [
   new SlashCommandBuilder()
     .setName("cve-search")
-    .setDescription("NVD CVE API 쿼리 문자열로 검색합니다.")
+    .setDescription("자연어로 CVE 검색 (예: '최근 1년 critical 윈도우 취약점')")
     .addStringOption((option) =>
       option
-        .setName("query")
-        .setDescription(
-          "NVD API 뒤에 붙일 쿼리 (예: keywordSearch=chrome&resultsPerPage=5)"
-        )
+        .setName("question")
+        .setDescription("검색하고 싶은 내용을 자연어로 적어주세요.")
         .setRequired(true)
     )
     .toJSON(),

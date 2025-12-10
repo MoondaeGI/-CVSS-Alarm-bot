@@ -5,6 +5,10 @@ import { XMLParser } from "fast-xml-parser";
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 import OpenAI from "openai";
+import {
+  buildNvdQuerySpecFromQuestion,
+  buildNvdQueryStringFromSpec,
+} from "./query-builder.js";
 
 // ───────────────────────────────────
 // 환경변수
@@ -235,7 +239,7 @@ function buildCveEmbed({
       },
       {
         name: "URL",
-        value: latest.link,
+        value: link,
       }
     )
     .setFooter({ text: "NVD CVE 알림봇" });
@@ -410,7 +414,9 @@ client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName !== "cve-search") return;
 
-  const rawQuery = interaction.options.getString("query");
+  const question = interaction.options.getString("question");
+  const spec = await buildNvdQuerySpecFromQuestion(question);
+  const rawQuery = buildNvdQueryStringFromSpec(spec);
 
   await interaction.deferReply(); // "생각 중..." 표시
 
