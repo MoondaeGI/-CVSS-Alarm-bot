@@ -1,4 +1,17 @@
 import OpenAI from "openai";
+import http from "http";
+
+// Render healthcheck용
+const PORT = process.env.PORT || 3000;
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("OK");
+});
+
+server.listen(PORT, () => {
+  console.log(`Render healthcheck server listening on port ${PORT}`);
+});
 
 // ───────────────────────────────────
 // OpenAI 초기화
