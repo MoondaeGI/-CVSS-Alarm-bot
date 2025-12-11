@@ -414,13 +414,13 @@ client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName !== "cve-search") return;
 
-  const question = interaction.options.getString("question");
-  const spec = await buildNvdQuerySpecFromQuestion(question);
-  const rawQuery = buildNvdQueryStringFromSpec(spec);
-
   await interaction.deferReply(); // "생각 중..." 표시
 
   try {
+    const question = interaction.options.getString("question");
+    const spec = await buildNvdQuerySpecFromQuestion(question);
+    const rawQuery = buildNvdQueryStringFromSpec(spec);
+    
     const vulns = await searchCveByRawQuery(rawQuery);
 
     if (!vulns.length) {
